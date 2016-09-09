@@ -23,7 +23,6 @@ import sys
 from threading import Thread
 
 class CS1Canvas(QWidget):
-    
     def __init__(self, parent = None, width = 400, height = 400, flipped_y = True):
         QWidget.__init__(self, parent)
        

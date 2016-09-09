@@ -6,7 +6,22 @@ from time import sleep
 from Brick import *
 from random import randint
 from random import randrange
+
+# Global Variables
 counter = 0
+WINDOW_SIZE = 400
+WINDOW_CENTER = WINDOW_SIZE / 2
+paddle_x = 160
+paddle_y = 380
+PADDLE_WIDTH = 80
+PADDLE_HEIGHT = 20
+PADDLE_SHIFT = 8
+ball_x = WINDOW_CENTER
+ball_y = WINDOW_CENTER
+ball_radius = 10
+ball_shift_h = 0  # how many pixels the ball will shift horizontally
+ball_shift_v = 0  # how many pixels the ball will shift vertically
+
 
 def check_if_lines_collide(hx1,hx2,hy,vy1,vy2,vx):
     return (hy > vy1 and hy < vy2) and (vx > hx1 and vx < hx2)
@@ -45,33 +60,38 @@ def draw_inital_bricks(PADDLE_WIDTH, PADDLE_HEIGHT):
     set_of_bricks.add(brick15)
     return set_of_bricks
 
+def resetWindow():
+    clear()
+    enable_smoothing()
+    enable_stroke()
+
+def draw_bricks(brick):
+    set_fill_color(1, 0, 0)  # color everything red
+    brick.draw()
+
 def main():
     enable_smoothing()
-    WINDOW_SIZE = 400
-    WINDOW_CENTER = WINDOW_SIZE / 2
-    paddle_x = 160
-    paddle_y = 380
-    PADDLE_WIDTH = 80
-    PADDLE_HEIGHT = 20
-    PADDLE_SHIFT = 8
-    ball_x = WINDOW_CENTER
-    ball_y = WINDOW_CENTER
-    ball_radius = 10
-    ball_shift_h = 0                #how many pixels the ball will shift horizontally
-    ball_shift_v = 0                #how many pixels the ball will shift vertically
+    global WINDOW_SIZE
+    global WINDOW_CENTER
+    global paddle_x
+    global paddle_y
+    global PADDLE_WIDTH
+    global PADDLE_HEIGHT
+    global PADDLE_SHIFT
+    global ball_x
+    global ball_y
+    global ball_radius
+    global ball_shift_h                #how many pixels the ball will shift horizontally
+    global ball_shift_v                #how many pixels the ball will shift vertically
 
     set_of_bricks = draw_inital_bricks(PADDLE_WIDTH, PADDLE_HEIGHT)
     counter = 0 #counter to speed up ball if necessary
     #drawing everything
     while not window_closed():
-        clear()
-        enable_smoothing()
-        enable_stroke()
-
+        resetWindow()
         #loop through bricks and draw em
         for brick in set_of_bricks:
-            set_fill_color(1,0,0)   #color everything red
-            brick.draw()
+            draw_bricks(brick)
             if check_if_lines_collide(brick.get_x(), brick.get_x() + brick.get_width(), brick.get_y() +
                     brick.get_height(), ball_y - ball_radius, ball_y + ball_radius, ball_x):
                 brick.delete()
@@ -80,7 +100,7 @@ def main():
                 print 'ball hit brick'
                 ball_shift_v = - ball_shift_v
                 ball_shift_v += 1
-                print 'ball speed is' + str(ball_shift_v)
+                print 'ball speed is ' + str(ball_shift_v)
 
         #quit the game by pressing q
         if is_key_pressed("q"):
@@ -140,7 +160,5 @@ def main():
         sleep(.015)
 
 
-
-
-
-start_graphics(main)
+if __name__ == '__main__':
+    start_graphics(main)
