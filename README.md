@@ -5,5 +5,7 @@ This is a recreation of the game Breakout. I wanted to try to make it after seei
 
 
 # Requirements
-1. PySide
-    sudo apt-get install PySide
+##### 1. Python 2.X
+        sudo apt-get install python
+##### 2. PySide
+        sudo apt-get install PySide
