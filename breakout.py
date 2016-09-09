@@ -7,8 +7,43 @@ from Brick import *
 from random import randint
 from random import randrange
 counter = 0
+
 def check_if_lines_collide(hx1,hx2,hy,vy1,vy2,vx):
     return (hy > vy1 and hy < vy2) and (vx > hx1 and vx < hx2)
+
+def draw_inital_bricks(PADDLE_WIDTH, PADDLE_HEIGHT):
+    set_of_bricks = set()
+    brick1 = Brick(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick2 = Brick(80, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick3 = Brick(160, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick4 = Brick(240, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick5 = Brick(320, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick6 = Brick(0, 20, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick7 = Brick(80, 20, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick8 = Brick(160, 20, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick9 = Brick(240, 20, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick10 = Brick(320, 20, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick11 = Brick(0, 40, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick12 = Brick(80, 40, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick13 = Brick(160, 40, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick14 = Brick(240, 40, PADDLE_WIDTH, PADDLE_HEIGHT)
+    brick15 = Brick(320, 40, PADDLE_WIDTH, PADDLE_HEIGHT)
+    set_of_bricks.add(brick1)
+    set_of_bricks.add(brick2)
+    set_of_bricks.add(brick3)
+    set_of_bricks.add(brick4)
+    set_of_bricks.add(brick5)
+    set_of_bricks.add(brick6)
+    set_of_bricks.add(brick7)
+    set_of_bricks.add(brick8)
+    set_of_bricks.add(brick9)
+    set_of_bricks.add(brick10)
+    set_of_bricks.add(brick11)
+    set_of_bricks.add(brick12)
+    set_of_bricks.add(brick13)
+    set_of_bricks.add(brick14)
+    set_of_bricks.add(brick15)
+    return set_of_bricks
 
 def main():
     enable_smoothing()
@@ -25,42 +60,8 @@ def main():
     ball_shift_h = 0                #how many pixels the ball will shift horizontally
     ball_shift_v = 0                #how many pixels the ball will shift vertically
 
-
-    #hardcoding the bricks
-    list_of_bricks = []
-    brick1 = Brick(0,0,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick2 = Brick(80,0,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick3 = Brick(160,0,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick4 = Brick(240,0,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick5 = Brick(320,0,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick6 = Brick(0,20,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick7 = Brick(80,20,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick8 = Brick(160,20,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick9 = Brick(240,20,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick10 = Brick(320,20,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick11 = Brick(0,40,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick12 = Brick(80,40,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick13 = Brick(160,40,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick14 = Brick(240,40,PADDLE_WIDTH,PADDLE_HEIGHT)
-    brick15 = Brick(320,40,PADDLE_WIDTH,PADDLE_HEIGHT)
-    list_of_bricks.append(brick1)
-    list_of_bricks.append(brick2)
-    list_of_bricks.append(brick3)
-    list_of_bricks.append(brick4)
-    list_of_bricks.append(brick5)
-    list_of_bricks.append(brick6)
-    list_of_bricks.append(brick7)
-    list_of_bricks.append(brick8)
-    list_of_bricks.append(brick9)
-    list_of_bricks.append(brick10)
-    list_of_bricks.append(brick11)
-    list_of_bricks.append(brick12)
-    list_of_bricks.append(brick13)
-    list_of_bricks.append(brick14)
-    list_of_bricks.append(brick15)
-
+    set_of_bricks = draw_inital_bricks(PADDLE_WIDTH, PADDLE_HEIGHT)
     counter = 0 #counter to speed up ball if necessary
-
     #drawing everything
     while not window_closed():
         clear()
@@ -68,10 +69,11 @@ def main():
         enable_stroke()
 
         #loop through bricks and draw em
-        for brick in list_of_bricks:
+        for brick in set_of_bricks:
             set_fill_color(1,0,0)   #color everything red
             brick.draw()
-            if check_if_lines_collide(brick.get_x(), brick.get_x() + brick.get_width(), brick.get_y() + brick.get_height(), ball_y - ball_radius, ball_y + ball_radius, ball_x):
+            if check_if_lines_collide(brick.get_x(), brick.get_x() + brick.get_width(), brick.get_y() +
+                    brick.get_height(), ball_y - ball_radius, ball_y + ball_radius, ball_x):
                 brick.delete()
                 brick.alive = False
                 counter += 1
@@ -89,14 +91,14 @@ def main():
         draw_circle(ball_x,ball_y,ball_radius)
 
         #movement of paddle to the left and right
-        if is_key_pressed("m") and paddle_x + 80 <= WINDOW_SIZE:
+        if is_key_pressed("d") and paddle_x + 80 <= WINDOW_SIZE:
             paddle_x = paddle_x + PADDLE_SHIFT
-        if is_key_pressed("z") and paddle_x >= 0:
+        if is_key_pressed("a") and paddle_x >= 0:
             paddle_x = paddle_x - PADDLE_SHIFT
 
         #returning the ball to the center of the screen
         if is_key_pressed(" "):
-            for brick in list_of_bricks:
+            for brick in set_of_bricks:
                 brick.reset()
             counter = 0
             ball_x = WINDOW_CENTER
@@ -136,6 +138,7 @@ def main():
         draw_circle(ball_x,ball_y,ball_radius)
         request_redraw()
         sleep(.015)
+
 
 
 

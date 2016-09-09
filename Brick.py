@@ -13,6 +13,7 @@ class Brick:
     def reset(self):
         self.width = 80
         self.height = 20
+
     def delete(self):
         self.width = 0
         self.height = 0
